@@ -15,24 +15,27 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class mainWindow extends noeditMaterial implements MouseListener, KeyListener{
-	//mainJframe
+public class mainWindow extends noeditMaterial implements MouseListener, KeyListener {
+	// mainJframe
 	private JFrame mainWindow;
-	//JPanels
-	private JPanel jf,textField,equationTextField;
-	//Jbuttons
-	private JButton num1b, num2b, num3b, num4b, num5b, num6b, num7b, num8b, num9b, num0b, squareb, subtractb, addb, multb, divb,equals,period,plusorminus,backspace, clear, clearall,sinb,cosb,rootb,eb,pib,tanb,radian;
-	//Displayer is what displays the numbers and operators
+    
+	// JPanels
+	private JPanel jf, textField, equationTextField;
+    
+	// JButtons
+	private JButton[] nums = new JButton[10];
+    private JButton squareb, subtractb, addb, multb, divb, equals, period, plusorminus, backspace, clear, clearall, sinb, cosb, rootb, eb, pib, tanb, radian;
+	// Displayer is what displays the numbers and operators
 	private JTextPane calcDisplayer, equationDisplayer;
-	//number saves the first number into a string and number2 saves the second number into a string. AnswerConvToString is what is used to display the number after calculations
-	private String number,number2,answerConvToString;
-	//presNumber is the current number that was pressed and answer is the final answer before it is converted to String
-	private int presNumber,answerT;
+	// number saves the first number into a string and number2 saves the second number into a string. AnswerConvToString is what is used to display the number after calculations
+	private String number, number2, answerConvToString;
+	// presNumber is the current number that was pressed and answer is the final answer before it is converted to String
+	private int presNumber, answerT;
 	private double answer;
-	//bunch of booleans. the operator booleans are turned true when they are pressed. That way I know which operation to apply to the two numbers. 
-	private boolean numberEnd,subtract,mult,add,div,square,isInteger,isCycling,shift,root,sin,cos,tan,degrees = false; 
+	// bunch of booleans. the operator booleans are turned true when they are pressed. That way I know which operation to apply to the two numbers. 
+	private boolean numberEnd, subtract, mult, add, div, square, isInteger, isCycling, shift, root, sin, cos, tan, degrees = false; 
 
-	//I added the display boolean in case you didn't want the display but still wanted to create a new mainWindow object outside the class
+	// I added the display boolean in case you didn't want the display but still wanted to create a new mainWindow object outside the class
 	public mainWindow(boolean display){
 		if(display){
 			
@@ -43,13 +46,18 @@ public class mainWindow extends noeditMaterial implements MouseListener, KeyList
 	    
 			GridLayout fl = new GridLayout();
 		
-			//make it look purty
+			// make it look purty
 			fl.setRows(7);
 			fl.setVgap(10);
 			fl.setHgap(50);
 			jf.setLayout(fl);
+            
+            // create number buttons
+            for (int i = 0; i < 10; i++) {
+                nums[i] = new JButton(Integer.toString(i));
+            }
 			
-			//For some reason the textField only extends across the window when you apply BorderLayout to it. It doesn't work if you apply the BorderLayout to the mainWindow instead of the textField. 
+			// For some reason the textField only extends across the window when you apply BorderLayout to it. It doesn't work if you apply the BorderLayout to the mainWindow instead of the textField. 
 			BorderLayout textFieldbl = new BorderLayout();
 			textField.setLayout(textFieldbl);
 			textField.add(calcDisplayer = new JTextPane());
@@ -58,25 +66,28 @@ public class mainWindow extends noeditMaterial implements MouseListener, KeyList
 			equationTextField.setLayout(equationTextFieldbl);
 			equationTextField.add(equationDisplayer = new JTextPane());
 
-			//This is what disables the text field at the top from being typed in.
+			// This is what disables the text field at the top from being typed in.
 			calcDisplayer.setEditable(false);
 			equationDisplayer.setEditable(false);
 			
-			//Mouse listeners
-
-			jf.add(backspace = new JButton("<"));jf.add(clear = new JButton("C"));jf.add(clearall = new JButton("CE"));jf.add(rootb = new JButton("\u221A"));jf.add(sinb = new JButton("sin()"));jf.add(cosb = new JButton("cos()"));jf.add(tanb = new JButton("tan()"));jf.add(squareb = new JButton("^2"));jf.add(eb = new JButton("e"));jf.add(pib = new JButton("\u03C0"));jf.add(plusorminus = new JButton("+-"));jf.add(multb = new JButton("*"));jf.add(num1b = new JButton("1"));jf.add(num2b = new JButton("2"));jf.add(num3b = new JButton("3"));jf.add(subtractb = new JButton("-"));jf.add(num4b = new JButton("4"));jf.add(num5b = new JButton("5"));jf.add(num6b = new JButton("6"));jf.add(addb = new JButton("+"));jf.add(num7b = new JButton("7"));jf.add(num8b = new JButton("8"));jf.add(num9b = new JButton("9"));jf.add(divb = new JButton("/"));jf.add(radian = new JButton("RT"));jf.add(num0b = new JButton("0"));jf.add(period = new JButton("."));jf.add(equals = new JButton("="));
-			num1b.addMouseListener(this);num2b.addMouseListener(this);num3b.addMouseListener(this);num4b.addMouseListener(this);num5b.addMouseListener(this);num6b.addMouseListener(this);num7b.addMouseListener(this);num8b.addMouseListener(this);num9b.addMouseListener(this);num0b.addMouseListener(this);
+			jf.add(backspace = new JButton("<"));jf.add(clear = new JButton("C"));jf.add(clearall = new JButton("CE"));jf.add(rootb = new JButton("\u221A"));jf.add(sinb = new JButton("sin()"));jf.add(cosb = new JButton("cos()"));jf.add(tanb = new JButton("tan()"));jf.add(squareb = new JButton("^2"));jf.add(eb = new JButton("e"));jf.add(pib = new JButton("\u03C0"));jf.add(plusorminus = new JButton("+-"));jf.add(multb = new JButton("*"));jf.add(nums[1]);jf.add(nums[2]);jf.add(nums[3]);jf.add(subtractb = new JButton("-"));jf.add(nums[4]);jf.add(nums[5]);jf.add(nums[6]);jf.add(addb = new JButton("+"));jf.add(nums[7]);jf.add(nums[8]);jf.add(nums[9]);jf.add(divb = new JButton("/"));jf.add(radian = new JButton("RT"));jf.add(nums[0]);jf.add(period = new JButton("."));jf.add(equals = new JButton("="));
+            
+			// Mouse listeners
+			for (int i = 0; i < 10; i++) {
+                nums[i].addMouseListener(this);
+            }
 			divb.addMouseListener(this);subtractb.addMouseListener(this);addb.addMouseListener(this);multb.addMouseListener(this);squareb.addMouseListener(this);rootb.addMouseListener(this);sinb.addMouseListener(this);cosb.addMouseListener(this);
 			equals.addMouseListener(this);plusorminus.addMouseListener(this);period.addMouseListener(this);eb.addMouseListener(this);pib.addMouseListener(this);tanb.addMouseListener(this);
 			clear.addMouseListener(this);clearall.addMouseListener(this);backspace.addMouseListener(this);radian.addMouseListener(this);
 			
-            //for some reason... I have to have add all of these... otherwise things get weird...
-			num1b.addKeyListener(this);num2b.addKeyListener(this);num3b.addKeyListener(this);num4b.addKeyListener(this);num5b.addKeyListener(this);num6b.addKeyListener(this);num7b.addKeyListener(this);num8b.addKeyListener(this);num9b.addKeyListener(this);num0b.addKeyListener(this);
+            // for some reason... I have to have add all of these... otherwise things get weird...
+			for (int i = 0; i < 10; i++) {
+                nums[i].addKeyListener(this);
+            }
 			divb.addKeyListener(this);subtractb.addKeyListener(this);addb.addKeyListener(this);multb.addKeyListener(this);squareb.addKeyListener(this);rootb.addKeyListener(this);sinb.addKeyListener(this);cosb.addKeyListener(this);
 			equals.addKeyListener(this);plusorminus.addKeyListener(this);period.addKeyListener(this);eb.addKeyListener(this);pib.addKeyListener(this);tanb.addKeyListener(this);radian.addKeyListener(this);
 			clear.addKeyListener(this);clearall.addKeyListener(this);backspace.addKeyListener(this);
 			equationDisplayer.addKeyListener(this);calcDisplayer.addKeyListener(this);
-			
 			
 			jf.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 			jf.setBackground(java.awt.Color.black);
@@ -86,12 +97,15 @@ public class mainWindow extends noeditMaterial implements MouseListener, KeyList
 			mainWindow.add(textField, BorderLayout.CENTER);
 			mainWindow.add(jf, BorderLayout.SOUTH);
 			
-			//more purty things
+			// more purty things
 			mainWindow.setTitle("Boss Calculator");
 			Font displayerFont = new Font("Serif", Font.BOLD, 33);
-			calcDisplayer.setFont(displayerFont);
 			Font buttonFont = new Font("Serif", Font.BOLD, 28);
-			num1b.setFont(buttonFont);num2b.setFont(buttonFont);num3b.setFont(buttonFont);num4b.setFont(buttonFont);num5b.setFont(buttonFont);num6b.setFont(buttonFont);num7b.setFont(buttonFont);num8b.setFont(buttonFont);num9b.setFont(buttonFont);num0b.setFont(buttonFont);
+			calcDisplayer.setFont(displayerFont);
+            
+			for (int i = 0; i < 10; i++) {
+                nums[i].setFont(buttonFont);
+            }
 			equals.setFont(buttonFont);backspace.setFont(buttonFont);plusorminus.setFont(buttonFont);clear.setFont(buttonFont);clearall.setFont(buttonFont);addb.setFont(buttonFont);
 			subtractb.setFont(buttonFont);multb.setFont(buttonFont);squareb.setFont(buttonFont);divb.setFont(buttonFont);period.setFont(buttonFont);rootb.setFont(buttonFont);sinb.setFont(buttonFont);cosb.setFont(buttonFont);pib.setFont(buttonFont);eb.setFont(buttonFont);tanb.setFont(buttonFont);radian.setFont(buttonFont);
 	        String path = "calculator.png";
@@ -104,7 +118,7 @@ public class mainWindow extends noeditMaterial implements MouseListener, KeyList
 			}
 			mainWindow.setIconImage(image);
 
-			//finally
+			// finally
 			changeDimension(mainWindow, 300,250);
 			windowPacker(mainWindow);
 		}
@@ -120,32 +134,18 @@ public class mainWindow extends noeditMaterial implements MouseListener, KeyList
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		
-		if(e.getSource() == num1b){
-			displayNumbers(1,calcDisplayer,isNumberEnd(), this);
-		}else if(e.getSource() == num2b){
-			displayNumbers(2,calcDisplayer,isNumberEnd(), this);
-		}else if(e.getSource() == num3b){
-			displayNumbers(3,calcDisplayer,isNumberEnd(), this);
-		}else if (e.getSource() == num4b){
-			displayNumbers(4,calcDisplayer,isNumberEnd(), this);
-		}else if(e.getSource() == num5b){
-			displayNumbers(5,calcDisplayer,isNumberEnd(), this);
-		}else if(e.getSource() == num6b){
-			displayNumbers(6,calcDisplayer,isNumberEnd(), this);
-		}else if (e.getSource() == num7b){
-			displayNumbers(7,calcDisplayer,isNumberEnd(), this);
-		}else if(e.getSource() == num8b){
-			displayNumbers(8,calcDisplayer,isNumberEnd(), this);
-		}else if(e.getSource() == num9b){
-		    displayNumbers(9,calcDisplayer,isNumberEnd(), this);
-		}else if(e.getSource() == num0b){
-			displayNumbers(0,calcDisplayer,isNumberEnd(), this);
-		}else if(e.getSource() == pib){
-			displayNumbers(Math.PI,calcDisplayer,isNumberEnd(),this);
+		for (int i = 0; i < 10; i++) {
+            if (e.getSource() == nums[i]) {
+                displayNumbers(i, calcDisplayer, isNumberEnd(), this);
+            }
+        }
+
+		if(e.getSource() == pib){
+			displayNumbers(Math.PI,calcDisplayer, isNumberEnd(), this);
 		}else if(e.getSource() == eb){
-			displayNumbers(Math.E,calcDisplayer,isNumberEnd(),this);
+			displayNumbers(Math.E, calcDisplayer, isNumberEnd(), this);
 		}
-		//addition, subtraction etc buttons.
+		// addition, subtraction etc buttons.
 
 		if(e.getSource() == subtractb){
 			
@@ -246,11 +246,11 @@ public class mainWindow extends noeditMaterial implements MouseListener, KeyList
 		
 	}
 	public void calculations(){
-		//If you are wondering why this has so many parameters, dont worry, everything will be ok.
+		// If you are wondering why this has so many parameters, dont worry, everything will be ok.
 		calcDisplayer.setText(finalCalculations(getNumberS(), getNumberS2(), isSquare(), isSubtract(), isMult(), 
 				isDiv(), isAdd(), isRoot(), isSin(), isCos(),isTan(), getAnswerDouble(), getAnswerInt(), answerConvToString, calcDisplayer, this));
 	}
-	//Next 5 lines are useless (almost)
+	// Next 5 lines are useless (almost)
 	public void mousePressed(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
@@ -261,10 +261,10 @@ public class mainWindow extends noeditMaterial implements MouseListener, KeyList
 	public void keyPressed(KeyEvent e){
 		int key = e.getKeyCode();
 
-		if(key == 16){//shift
+		if(key == 16){// shift
 			shift = true;
 		}
-		if(key == KeyEvent.VK_ENTER){//for some reason the vk thing is only working for enter. So I just leave this one
+		if(key == KeyEvent.VK_ENTER){// for some reason the vk thing is only working for enter. So I just leave this one
 			calculations();
 		}
 		
@@ -279,7 +279,7 @@ public class mainWindow extends noeditMaterial implements MouseListener, KeyList
 		keyPressedNumbers(key, KeyEvent.VK_8,8,shift,calcDisplayer,this);
 		keyPressedNumbers(key, KeyEvent.VK_9,9,shift,calcDisplayer,this);
 		
-		//the secondary method is for the extra shift functionality
+		// the secondary method is for the extra shift functionality
 		setAdd(secondaryKeyPressedOperators(key,107,61,"+", isAdd(),shift,isNumberEnd(),isCycling(),calcDisplayer,this));
 		setMult(secondaryKeyPressedOperators(key,106,56,"*", isMult(), shift, isNumberEnd(), isCycling(), calcDisplayer,this));
 		if(getNumberS() != null && getNumberS() != ""){
@@ -292,16 +292,16 @@ public class mainWindow extends noeditMaterial implements MouseListener, KeyList
 		setSubtract(keyPressedOperators(key,109,"-",isSubtract(),shift,calcDisplayer,this,isCycling()));
 
 		
-		if(key == 8){//backspace
+		if(key == 8){// backspace
 			moreBackspace(this, calcDisplayer);
 		}
-		if(key == 67){//clear
+		if(key == 67){// clear
 			completeClear(calcDisplayer, this);
 		}
-		if(key == 46 || key == 127){//period on left or period on numpad
+		if(key == 46 || key == 127){// period on left or period on numpad
 			periodAdder(this, calcDisplayer);
 		}
-		if(shift && key == 45){//converts to negative if you ctrl minus
+		if(shift && key == 45){// converts to negative if you ctrl minus
 			if(isNumberEnd()){
 				setNumberS2(negativeConverter(getNumberS2()));
 				calcDisplayer.setText(getNumberS2());
@@ -311,51 +311,51 @@ public class mainWindow extends noeditMaterial implements MouseListener, KeyList
 				calcDisplayer.setText(getNumberS());
 			}
 		}
-		if(key == 32){//press space
+		if(key == 32){// press space
 			completeClear(calcDisplayer, this);
 			calcDisplayer.setText("spacebar? really?");
 		}
 		
-		if(key == 69){//... It's the e key... for the e button
+		if(key == 69){// ... It's the e key... for the e button
 			displayNumbers(Math.E,calcDisplayer,isNumberEnd(),this);
 		}
 		
-		if(key == 83){//S for sign
+		if(key == 83){// S for sign
 			if(getNumberS() != null && getNumberS() != "" && !isNumberEnd()){
 				setSin(keyPressedOperators(0,0,"Sin(" + getNumberS() + ")",isSin(),shift,calcDisplayer,this,isCycling()));
 			}else{
 				setSin(keyPressedOperators(0,0,"Sin(",isSin(),shift,calcDisplayer,this,isCycling()));
 			}
 		}
-		if(key == 79){//Using an o for cosign because I used c for clear
+		if(key == 79){// Using an o for cosign because I used c for clear
 			if(getNumberS() != null && getNumberS() != "" && !isNumberEnd()){
 				setCos(keyPressedOperators(0,0,"Cos(" + getNumberS() + ")",isCos(),shift,calcDisplayer,this,isCycling()));
 			}else{
 				setCos(keyPressedOperators(0,0,"Cos(",isCos(),shift,calcDisplayer,this,isCycling()));
 			}
 		}
-		if(key == 84){//t for tan
+		if(key == 84){// t for tan
     		if(getNumberS() != null && getNumberS() != "" && !isNumberEnd()){
     			setTan(keyPressedOperators(0,0,"Tan(" + getNumberS() + ")",isTan(),shift,calcDisplayer,this,isCycling()));
     		}else{
     			setTan(keyPressedOperators(0,0,"Tan(",isTan(),shift,calcDisplayer,this,isCycling()));
     		}
 		}
-		if(key == 80){//p for pi
+		if(key == 80){// p for pi
 			displayNumbers(Math.PI,calcDisplayer,isNumberEnd(),this);
 		}
-		if(key == 82){//r for radians cycles betweens degrees and radians when using sin cos and tan
+		if(key == 82){// r for radians cycles betweens degrees and radians when using sin cos and tan
 			setDegrees(!isDegrees());
 		}
 		
 
 	}
 	public void keyReleased(KeyEvent e) {
-		if(e.getKeyCode() == 16){//shift
+		if(e.getKeyCode() == 16){// shift
 			shift = false;
 		}
 	}
-	//just a bunch of getters and setters for the no edit method.
+	// just a bunch of getters and setters for the no edit method.
 	public String getOperator(){
 		if(isMult()){
 			return "*";
