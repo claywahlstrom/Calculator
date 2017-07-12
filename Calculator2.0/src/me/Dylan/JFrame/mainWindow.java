@@ -37,7 +37,7 @@ public class mainWindow extends noeditMaterial implements MouseListener, KeyList
 	private boolean add, cos, degrees, div, isCycling, isInteger, mult, numberEnd, root, shift, sin, square, subtract, tan = false;
 
 	// I added the display boolean in case you didn't want the display but still wanted to create a new mainWindow object outside the class
-	public mainWindow(boolean display){
+	public mainWindow(boolean display) {
 		if (display) {
 			
 			mainWindow = new JFrame();
@@ -127,6 +127,18 @@ public class mainWindow extends noeditMaterial implements MouseListener, KeyList
 			
 			// more purty things
 			mainWindow.setTitle("Boss Calculator");
+            
+            String path = "calculator.png";
+	        File file = new File(path);
+	        BufferedImage image = null;
+			try {
+				image = ImageIO.read(file);
+                mainWindow.setIconImage(image);
+			} catch (IOException e) {
+				e.printStackTrace();
+                System.exit(0);
+			}
+            
 			Font displayerFont = new Font("Serif", Font.BOLD, 33);
 			calcDisplayer.setFont(displayerFont);
             
@@ -137,29 +149,18 @@ public class mainWindow extends noeditMaterial implements MouseListener, KeyList
             }
             addb.setFont(buttonFont);backspace.setFont(buttonFont);clear.setFont(buttonFont);clearall.setFont(buttonFont);cosb.setFont(buttonFont);divb.setFont(buttonFont);eb.setFont(buttonFont);equals.setFont(buttonFont);multb.setFont(buttonFont);period.setFont(buttonFont);pib.setFont(buttonFont);plusorminus.setFont(buttonFont);radian.setFont(buttonFont);rootb.setFont(buttonFont);sinb.setFont(buttonFont);squareb.setFont(buttonFont);subtractb.setFont(buttonFont);tanb.setFont(buttonFont);
             
-	        String path = "calculator.png";
-	        File file = new File(path);
-	        BufferedImage image = null;
-			try {
-				image = ImageIO.read(file);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			mainWindow.setIconImage(image);
-
-			// finally
+    		// finally
 			changeDimension(mainWindow, 300, 250);
 			windowPacker(mainWindow);
 		}
 			
 	}
 	
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		@SuppressWarnings("unused")
 		mainWindow mw = new mainWindow(true);
-
-		
 	}
+    
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		
@@ -169,116 +170,93 @@ public class mainWindow extends noeditMaterial implements MouseListener, KeyList
             }
         }
 
-		if(e.getSource() == pib){
+		if(e.getSource() == pib) {
 			displayNumbers(Math.PI,calcDisplayer, isNumberEnd(), this);
-		}else if(e.getSource() == eb){
+		} else if (e.getSource() == eb) {
 			displayNumbers(Math.E, calcDisplayer, isNumberEnd(), this);
 		}
 		// addition, subtraction etc buttons.
 
-		if(e.getSource() == subtractb){
-			
-			setSubtract(keyPressedOperators(0, 0, "-", isSubtract(),shift,calcDisplayer,this,isCycling()));
-			
-		}else if(e.getSource() == multb){
-			
+		if(e.getSource() == subtractb) {
+    		setSubtract(keyPressedOperators(0, 0, "-", isSubtract(),shift,calcDisplayer,this,isCycling()));
+		} else if (e.getSource() == multb) {
 			setMult(keyPressedOperators(0,0,"*",isMult(),shift,calcDisplayer,this,isCycling()));
 			
-		}else if(e.getSource() == divb){
+		} else if (e.getSource() == divb) {
+			setDiv(keyPressedOperators(0, 0, "/", isDiv(), shift, calcDisplayer, this, isCycling()));
 			
-			setDiv(keyPressedOperators(0,0,"/",isDiv(),shift,calcDisplayer,this,isCycling()));
-			
-		}else if(e.getSource() == addb){
-			setAdd(keyPressedOperators(0,0,"+",isAdd(),shift,calcDisplayer,this,isCycling()));
+		} else if (e.getSource() == addb) {
+			setAdd(keyPressedOperators(0, 0, "+", isAdd(), shift, calcDisplayer, this, isCycling()));
 
-		}else if(e.getSource() == squareb){
-			if(getNumberS() != null && getNumberS() != ""){
+		} else if (e.getSource() == squareb) {
+			if(getNumberS() != null && getNumberS() != "") {
 				setSquare(keyPressedOperators(0,0,getNumberS() + "^2",isSquare(),shift,calcDisplayer,this,isCycling()));
-			}else{
+			} else {
 				completeClear(calcDisplayer, this);
 			}
 			
-		}else if(e.getSource() == rootb){
-			setRoot(keyPressedOperators(0,0,"\u221A" + getNumberS(),isRoot(),shift,calcDisplayer,this,isCycling));
+		} else if (e.getSource() == rootb) {
+			setRoot(keyPressedOperators(0,0,"\u221A" + getNumberS(),isRoot(),shift,calcDisplayer,this,isCycling()));
 			
-		}else if(e.getSource() == sinb){
-			if(getNumberS() != null && getNumberS() != ""){
+		} else if (e.getSource() == sinb) {
+			if(getNumberS() != null && getNumberS() != "") {
 				setSquare(keyPressedOperators(0,0,getNumberS() + "^2",isSquare(),shift,calcDisplayer,this,isCycling()));
-			}else{
+			} else {
 				completeClear(calcDisplayer, this);
 			}
-		}else if(e.getSource() == cosb){
-			if(getNumberS() != null && getNumberS() != ""){
+		} else if (e.getSource() == cosb) {
+			if(getNumberS() != null && getNumberS() != "") {
 				setCos(keyPressedOperators(0,0,"Cos(" + getNumberS() + ")",isCos(),shift,calcDisplayer,this,isCycling()));
-			}else{
+			} else {
 				setCos(keyPressedOperators(0,0,"Cos(",isCos(),shift,calcDisplayer,this,isCycling()));
 			}
-    	}else if(e.getSource() == tanb){
-    		if(getNumberS() != null && getNumberS() != ""){
+    	} else if (e.getSource() == tanb) {
+    		if(getNumberS() != null && getNumberS() != "") {
     			setTan(keyPressedOperators(0,0,"Tan(" + getNumberS() + ")",isTan(),shift,calcDisplayer,this,isCycling()));
-    		}else{
+    		} else {
     			setTan(keyPressedOperators(0,0,"Tan(",isTan(),shift,calcDisplayer,this,isCycling()));
     		}
-	}
+        }
 		
-		if(e.getSource() == radian){
+		if(e.getSource() == radian) {
 			setDegrees(!isDegrees());
-		}
-		
-		if(e.getSource() == equals){
-			
+		} else if(e.getSource() == equals) {
 			calculations();
-			
-		}
-		
-		if(e.getSource() == clearall){
-			
+    	} else if(e.getSource() == clearall) {
 			completeClear(calcDisplayer, this);
-			
-		}
-		
-		if(e.getSource() == clear){
-			if(isNumberEnd()){
+		} else if(e.getSource() == clear) {
+			if(isNumberEnd()) {
 				setNumberS2("");
 				calcDisplayer.setText("");
-			}else{
-				if(isCycling()){
+			} else {
+				if(isCycling()) {
 					setCycling(false);
 					System.out.println("No longer cycling");
 				}
 				setNumberS("");
 				calcDisplayer.setText("");
 			}
-		}
-		
-		if(e.getSource() == backspace){
+		} else if(e.getSource() == backspace) {
 			moreBackspace(this, calcDisplayer);
-		}
-		
-		if(e.getSource() == period){
+		} else if(e.getSource() == period) {
 			periodAdder(this, calcDisplayer);
-
-			
-		}
-		
-		if(e.getSource() == plusorminus){
-			if(isNumberEnd()){
+		} else if(e.getSource() == plusorminus) {
+			if(isNumberEnd()) {
 				setNumberS2(negativeConverter(getNumberS2()));
 				calcDisplayer.setText(getNumberS2());
-			}else{
+			} else {
 				setNumberS(negativeConverter(getNumberS()));
 				calcDisplayer.setText(getNumberS());
 			}
 		}
-		
-
-		
 	}
-	public void calculations(){
+	public void calculations() {
 		// If you are wondering why this has so many parameters, dont worry, everything will be ok.
 		calcDisplayer.setText(finalCalculations(getNumberS(), getNumberS2(), isSquare(), isSubtract(), isMult(), 
 				isDiv(), isAdd(), isRoot(), isSin(), isCos(),isTan(), getAnswerDouble(), getAnswerInt(), answerConvToString, calcDisplayer, this));
 	}
+    
+    // Are these lines needed?
 	// Next 5 lines are useless (almost)
 	public void mousePressed(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}
@@ -287,16 +265,19 @@ public class mainWindow extends noeditMaterial implements MouseListener, KeyList
 	public void keyTyped(KeyEvent e) {}
 	
 	@Override
-	public void keyPressed(KeyEvent e){
+	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 
-		if(key == 16){// shift
+        // shift
+		if(key == 16) {
 			shift = true;
 		}
-		if(key == KeyEvent.VK_ENTER){// for some reason the vk thing is only working for enter. So I just leave this one
+        // for some reason the vk thing is only working for enter. So I just leave this one
+		if(key == KeyEvent.VK_ENTER) {
 			calculations();
 		}
 		
+        // This seems to be in it's simplest form, from what I know
 		keyPressedNumbers(key, KeyEvent.VK_0,0,shift,calcDisplayer,this);
 		keyPressedNumbers(key, KeyEvent.VK_1,1,shift,calcDisplayer,this);
 		keyPressedNumbers(key, KeyEvent.VK_2,2,shift,calcDisplayer,this);
@@ -311,142 +292,128 @@ public class mainWindow extends noeditMaterial implements MouseListener, KeyList
 		// the secondary method is for the extra shift functionality
 		setAdd(secondaryKeyPressedOperators(key,107,61,"+", isAdd(),shift,isNumberEnd(),isCycling(),calcDisplayer,this));
 		setMult(secondaryKeyPressedOperators(key,106,56,"*", isMult(), shift, isNumberEnd(), isCycling(), calcDisplayer,this));
-		if(getNumberS() != null && getNumberS() != ""){
+		if(getNumberS() != null && getNumberS() != "") {
 			setSquare(secondaryKeyPressedOperators(key,192,54,getNumberS() + "^2",isSquare(),shift,isNumberEnd(),isCycling(),calcDisplayer,this));
 		}
-        setRoot(secondaryKeyPressedOperators(key,40,50,"\u221A" + getNumberS(),isRoot(),shift,isNumberEnd(),isCycling,calcDisplayer,this));
+        setRoot(secondaryKeyPressedOperators(key,40,50, "\u221A" + getNumberS(),isRoot(),shift,isNumberEnd(),isCycling,calcDisplayer,this));
 		setDiv(keyPressedOperators(key,47,"/",isDiv(),shift,calcDisplayer,this,isCycling()));
 		setDiv(keyPressedOperators(key,111,"/",isDiv(), shift, calcDisplayer, this, isCycling()));
 		setSubtract(keyPressedOperators(key,45,"-",isSubtract(),shift,calcDisplayer,this,isCycling()));
 		setSubtract(keyPressedOperators(key,109,"-",isSubtract(),shift,calcDisplayer,this,isCycling()));
-
 		
-		if(key == 8){// backspace
+		if(key == 8) { // backspace
 			moreBackspace(this, calcDisplayer);
-		}
-		if(key == 67){// clear
+		} else if(key == 67) { // clear
 			completeClear(calcDisplayer, this);
-		}
-		if(key == 46 || key == 127){// period on left or period on numpad
+		} else if(key == 46 || key == 127) { // period on left or period on numpad
 			periodAdder(this, calcDisplayer);
-		}
-		if(shift && key == 45){// converts to negative if you ctrl minus
-			if(isNumberEnd()){
+		} else if(shift && key == 45) { // converts to negative if you ctrl minus
+			if(isNumberEnd()) {
 				setNumberS2(negativeConverter(getNumberS2()));
 				calcDisplayer.setText(getNumberS2());
-
-			}else{
+			} else {
 				setNumberS(negativeConverter(getNumberS()));
 				calcDisplayer.setText(getNumberS());
 			}
-		}
-		if(key == 32){// press space
+		} else if(key == 32) { // press space
 			completeClear(calcDisplayer, this);
 			calcDisplayer.setText("spacebar? really?");
-		}
-		
-		if(key == 69){// ... It's the e key... for the e button
+		} else if(key == 69) { //L ... It's the e key... for the e button
 			displayNumbers(Math.E,calcDisplayer,isNumberEnd(),this);
-		}
-		
-		if(key == 83){// S for sign
-			if(getNumberS() != null && getNumberS() != "" && !isNumberEnd()){
+		} else if(key == 83) { // S for sign
+			if(getNumberS() != null && getNumberS() != "" && !isNumberEnd()) {
 				setSin(keyPressedOperators(0,0,"Sin(" + getNumberS() + ")",isSin(),shift,calcDisplayer,this,isCycling()));
-			}else{
+			} else {
 				setSin(keyPressedOperators(0,0,"Sin(",isSin(),shift,calcDisplayer,this,isCycling()));
 			}
-		}
-		if(key == 79){// Using an o for cosign because I used c for clear
-			if(getNumberS() != null && getNumberS() != "" && !isNumberEnd()){
+		} else if(key == 79) { // Using an o for cosign because I used c for clear
+			if(getNumberS() != null && getNumberS() != "" && !isNumberEnd()) {
 				setCos(keyPressedOperators(0,0,"Cos(" + getNumberS() + ")",isCos(),shift,calcDisplayer,this,isCycling()));
-			}else{
+			} else {
 				setCos(keyPressedOperators(0,0,"Cos(",isCos(),shift,calcDisplayer,this,isCycling()));
 			}
-		}
-		if(key == 84){// t for tan
-    		if(getNumberS() != null && getNumberS() != "" && !isNumberEnd()){
+		} else if(key == 84) { // t for tan
+    		if(getNumberS() != null && getNumberS() != "" && !isNumberEnd()) {
     			setTan(keyPressedOperators(0,0,"Tan(" + getNumberS() + ")",isTan(),shift,calcDisplayer,this,isCycling()));
-    		}else{
+    		} else {
     			setTan(keyPressedOperators(0,0,"Tan(",isTan(),shift,calcDisplayer,this,isCycling()));
     		}
-		}
-		if(key == 80){// p for pi
+		} else if(key == 80) { // p for pi
 			displayNumbers(Math.PI,calcDisplayer,isNumberEnd(),this);
-		}
-		if(key == 82){// r for radians cycles betweens degrees and radians when using sin cos and tan
+		} else if(key == 82) { // r for radians cycles betweens degrees and radians when using sin cos and tan
 			setDegrees(!isDegrees());
 		}
-		
-
 	}
+    
 	public void keyReleased(KeyEvent e) {
-		if(e.getKeyCode() == 16){// shift
+		if(e.getKeyCode() == 16) { // shift
 			shift = false;
 		}
 	}
+    
 	// just a bunch of getters and setters for the no edit method.
-	public String getOperator(){
-		if(isMult()){
+	public String getOperator() {
+		if(isMult()) {
 			return "*";
-		}else if(isAdd()){
+		} else if (isAdd()) {
 			return "+";
-		}else if(isSubtract()){
+		} else if (isSubtract()) {
 			return "-";
-		}else if(isSquare()){
+		} else if (isSquare()) {
 			return "^2";
-		}else if(isDiv()){
+		} else if (isDiv()) {
 			return "/";
-		}else if(isRoot()){
+		} else if (isRoot()) {
 			return "\u221A";
-		}else if(isSin()){
+		} else if (isSin()) {
 			return "Sin(";
-		}else if(isCos()){
+		} else if (isCos()) {
 			return "Cos(";
-		}else if(isTan()){
+		} else if (isTan()) {
 			return "Tan(";
 		}
-		return "NA";
+		return "N/A";
 	}
 	
-	public void setDisplayer(String message){
+	public void setDisplayer(String message) {
 		calcDisplayer.setText(message);
 	}
-	public void setEquationDisplayer(String text){equationDisplayer.setText(text);}
-	public String getEquationDisplayer(){return equationDisplayer.getText();}
-	public boolean isNumberEnd() {return numberEnd;}
-	public void setNumberEnd(boolean numberEnd) {this.numberEnd = numberEnd;}
-	public boolean isInteger() {return isInteger;}
-	public void setInteger(boolean isInteger) {this.isInteger = isInteger;}
-	public int getAnswerInt() {return answerT;}
-	public void setAnswerInt(int answerT) {this.answerT = answerT;}
-	public double getAnswerDouble() {return answer;}
-	public void setAnswerDouble(double answer) {this.answer = answer;}
+	public String getEquationDisplayer() {return equationDisplayer.getText();}
 	public String getNumberS() {return number;}
-	public void setNumberS(String number) {this.number = number;}
 	public String getNumberS2() {return number2;}
-	public void setNumberS2(String number2) {this.number2 = number2;}
-	public boolean isCycling() {return isCycling;}
-	public void setCycling(boolean isCycling) {this.isCycling = isCycling;}
-	public void setSin(boolean sin){this.sin=sin;}
-	public boolean isSin(){return sin;}
-	public boolean isDiv() {return div;}
-	public void setDiv(boolean div) {this.div = div;}
 	public boolean isAdd() {return add;}
-	public void setAdd(boolean add) {this.add = add;}
-	public void setRoot(boolean root){this.root = root;}
-	public boolean isRoot(){return root;}
-	public void setCos(boolean cos){this.cos = cos;}
-	public boolean isCos(){return cos;}
-	public void setTan(boolean tan){this.tan = tan;}
-	public boolean isTan(){return tan;}
-	public boolean isMult() {return mult;}
-	public void setMult(boolean mult) {this.mult = mult;}
-	public boolean isSubtract() {return subtract;}
-	public void setSubtract(boolean subtract) {this.subtract = subtract;}
-	public boolean isSquare() {return square;}
-	public void setSquare(boolean square) {this.square = square;}
-	public int getPresNumber() {return presNumber;}
-	public void setPresNumber(int presNumber) {this.presNumber = presNumber;}
+	public boolean isCos() {return cos;}
+	public boolean isCycling() {return isCycling;}
 	public boolean isDegrees() {return degrees;}
+	public boolean isDiv() {return div;}
+	public boolean isInteger() {return isInteger;}
+	public boolean isMult() {return mult;}
+	public boolean isNumberEnd() {return numberEnd;}
+	public boolean isRoot() {return root;}
+	public boolean isSin() {return sin;}
+	public boolean isSquare() {return square;}
+	public boolean isSubtract() {return subtract;}
+	public boolean isTan() {return tan;}
+	public double getAnswerDouble() {return answer;}
+	public int getAnswerInt() {return answerT;}
+	public int getPresNumber() {return presNumber;}
+	public void setAdd(boolean add) {this.add = add;}
+	public void setAnswerDouble(double answer) {this.answer = answer;}
+	public void setAnswerInt(int answerT) {this.answerT = answerT;}
+	public void setCos(boolean cos) {this.cos = cos;}
+	public void setCycling(boolean isCycling) {this.isCycling = isCycling;}
 	public void setDegrees(boolean degrees) {this.degrees = degrees;}
+	public void setDiv(boolean div) {this.div = div;}
+	public void setEquationDisplayer(String text) {equationDisplayer.setText(text);}
+	public void setInteger(boolean isInteger) {this.isInteger = isInteger;}
+	public void setMult(boolean mult) {this.mult = mult;}
+	public void setNumberEnd(boolean numberEnd) {this.numberEnd = numberEnd;}
+	public void setNumberS(String number) {this.number = number;}
+	public void setNumberS2(String number2) {this.number2 = number2;}
+	public void setPresNumber(int presNumber) {this.presNumber = presNumber;}
+	public void setRoot(boolean root) {this.root = root;}
+	public void setSin(boolean sin) {this.sin=sin;}
+	public void setSquare(boolean square) {this.square = square;}
+	public void setSubtract(boolean subtract) {this.subtract = subtract;}
+	public void setTan(boolean tan) {this.tan = tan;}
 }
