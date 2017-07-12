@@ -103,7 +103,7 @@ public class noeditMaterial{
 		if(number ==null || (number2 == null && !square&& !root && !cos && !sin && !tan)){
 			window.syntaxErrorCatch(true, window, displayer);
 			return "";
-		}else{
+		} else {
 			double tempNum2 = 0;
 			double tempNum = 0;
 			try{
@@ -113,72 +113,71 @@ public class noeditMaterial{
 					tempNum2 = Double.parseDouble(number2);
 				}
 	
-			if(subtract){
-				window.setAnswerDouble(tempNum - tempNum2);
-			}else if(mult){
-				window.setAnswerDouble(tempNum*tempNum2);
-			}else if(div){
-				window.setAnswerDouble(tempNum/tempNum2);
-			}else if(add){
-				window.setAnswerDouble(tempNum+tempNum2);
-			}else if(square){
-				window.setAnswerDouble(tempNum*tempNum);
-			}else if(root){
-				window.setAnswerDouble(Math.sqrt(tempNum));
-			}else if(sin){
-				if(window.isDegrees()){
-					window.setAnswerDouble(Math.sin(tempNum/57.2958));
-				}else{
-					window.setAnswerDouble(Math.sin(tempNum));
-				}
-			}else if(cos){
-				if(window.isDegrees()){
-					window.setAnswerDouble(Math.cos(tempNum/57.2958));
-				}else{
-					window.setAnswerDouble(Math.cos(tempNum));
-				}
-			}else if(tan){
-				if(window.isDegrees()){
-					window.setAnswerDouble(Math.cos(tempNum/57.2958));	//turning to degrees
-				}else{
+                if(subtract){
+                    window.setAnswerDouble(tempNum - tempNum2);
+                }else if(mult){
+                    window.setAnswerDouble(tempNum*tempNum2);
+                }else if(div){
+                    window.setAnswerDouble(tempNum/tempNum2);
+                }else if(add){
+                    window.setAnswerDouble(tempNum+tempNum2);
+                }else if(square){
+                    window.setAnswerDouble(tempNum*tempNum);
+                }else if(root){
+                    window.setAnswerDouble(Math.sqrt(tempNum));
+                }else if(sin){
+                    if(window.isDegrees()){
+                        window.setAnswerDouble(Math.sin(tempNum/57.2958));
+                    }else{
+                        window.setAnswerDouble(Math.sin(tempNum));
+                    }
+                }else if(cos){
+                    if(window.isDegrees()){
+                        window.setAnswerDouble(Math.cos(tempNum/57.2958));
+                    }else{
+                        window.setAnswerDouble(Math.cos(tempNum));
+                    }
+                }else if(tan){
+                    if(window.isDegrees()){
+                        window.setAnswerDouble(Math.cos(tempNum/57.2958));	//turning to degrees
+                    }else{
+                        window.setAnswerDouble(Math.tan(tempNum));					
+                    }
 
-					window.setAnswerDouble(Math.tan(tempNum));					
-				}
 
+                }
 
-			}
+                String tempUser = ".";
+                String tempUser2 = "0";
+                String tempConv = "" + window.getAnswerDouble();
+                String tempConv2 = "";
+                //Definitely better ways to do this. I just looked if .0 exists and erased it to turn into an int. Otherwise it stays double.
+                if(tempConv.charAt(tempConv.length()-2) == tempUser.charAt(tempUser.length() -1) && tempConv.charAt(tempConv.length()-1) == tempUser2.charAt(tempUser2.length() -1)){
+                    for(int i=0; i<tempConv.length()-2; i++){
+                        tempConv2 = tempConv2 + "" +tempConv.charAt(i);
+                    }
+                    window.setInteger(true);
+                    window.setAnswerInt(Integer.parseInt(tempConv2));
+                    answerConvToString = "" + window.getAnswerInt();
+                }else{
+                    window.setInteger(false);
+                    window.setAnswerDouble(Double.parseDouble(tempConv));
+                    answerConvToString = "" + window.getAnswerDouble();
+                }
+                
+                if(window.isSquare()){
+                    window.setEquationDisplayer(window.getNumberS() + "^2" + " " + "=");
+                }else if(window.isSin() || window.isCos() || window.isTan() || window.isRoot()){
+                    window.setEquationDisplayer(window.getOperator() + window.getNumberS() + " " + "=");
+                }else{
+                    window.setEquationDisplayer(window.getNumberS() + " " + window.getOperator() + " " + window.getNumberS2() + " " + "=");
+                }
 
-			String tempUser = ".";
-			String tempUser2 = "0";
-			String tempConv = "" + window.getAnswerDouble();
-			String tempConv2 = "";
-			//Definitely better ways to do this. I just looked if .0 exists and erased it to turn into an int. Otherwise it stays double.
-			if(tempConv.charAt(tempConv.length()-2) == tempUser.charAt(tempUser.length() -1) && tempConv.charAt(tempConv.length()-1) == tempUser2.charAt(tempUser2.length() -1)){
-				for(int i=0; i<tempConv.length()-2; i++){
-					tempConv2 = tempConv2 + "" +tempConv.charAt(i);
-				}
-				window.setInteger(true);
-				window.setAnswerInt(Integer.parseInt(tempConv2));
-				answerConvToString = "" + window.getAnswerInt();
-			}else{
-				window.setInteger(false);
-				window.setAnswerDouble(Double.parseDouble(tempConv));
-				answerConvToString = "" + window.getAnswerDouble();
-			}
-			
-			if(window.isSquare()){
-				window.setEquationDisplayer(window.getNumberS() + "^2" + " " + "=");
-			}else if(window.isSin() || window.isCos() || window.isTan() || window.isRoot()){
-				window.setEquationDisplayer(window.getOperator() + window.getNumberS() + " " + "=");
-			}else{
-				window.setEquationDisplayer(window.getNumberS() + " " + window.getOperator() + " " + window.getNumberS2() + " " + "=");
-			}
-
-			window.syntaxErrorCatch(false, window, displayer);
-			return answerConvToString;
+                window.syntaxErrorCatch(false, window, displayer);
+                return answerConvToString;
 			//this is for when some loser puts in a value that is weird (or no value at all). So I just basically reject them with my method syntax error.
-			}catch(NumberFormatException ie){
-				System.out.println("here");
+			} catch (NumberFormatException ie){
+				System.out.println("Noob error, try again...");
 				window.syntaxErrorCatch(true, window, displayer);
 			}
 		}
