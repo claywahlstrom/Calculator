@@ -24,33 +24,38 @@ public class mainWindow extends noeditMaterial implements MouseListener, KeyList
     
 	// JButtons
 	private JButton[] nums = new JButton[10];
-    private JButton squareb, subtractb, addb, multb, divb, equals, period, plusorminus, backspace, clear, clearall, sinb, cosb, rootb, eb, pib, tanb, radian;
+    private JButton addb, backspace, clear, clearall, cosb, divb, eb, equals, multb, period, pib, plusorminus, radian, rootb, sinb, squareb, subtractb, tanb;
 	// Displayer is what displays the numbers and operators
 	private JTextPane calcDisplayer, equationDisplayer;
-	// number saves the first number into a string and number2 saves the second number into a string. AnswerConvToString is what is used to display the number after calculations
+	// number saves the first number into a string and number2 saves the second number into a string
+    // AnswerConvToString is what is used to display the number after calculations
 	private String number, number2, answerConvToString;
 	// presNumber is the current number that was pressed and answer is the final answer before it is converted to String
 	private int presNumber, answerT;
 	private double answer;
 	// bunch of booleans. the operator booleans are turned true when they are pressed. That way I know which operation to apply to the two numbers. 
-	private boolean numberEnd, subtract, mult, add, div, square, isInteger, isCycling, shift, root, sin, cos, tan, degrees = false; 
+	private boolean add, cos, degrees, div, isCycling, isInteger, mult, numberEnd, root, shift, sin, square, subtract, tan = false;
 
 	// I added the display boolean in case you didn't want the display but still wanted to create a new mainWindow object outside the class
 	public mainWindow(boolean display){
-		if(display){
+		if (display) {
 			
 			mainWindow = new JFrame();
+            mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            
 			jf = new JPanel();
 			textField = new JPanel();
 			equationTextField = new JPanel();
 	    
-			GridLayout fl = new GridLayout();
-		
 			// make it look purty
+			GridLayout fl = new GridLayout();
 			fl.setRows(7);
 			fl.setVgap(10);
 			fl.setHgap(50);
+
 			jf.setLayout(fl);
+            jf.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+			jf.setBackground(java.awt.Color.black);
             
             // create number buttons
             for (int i = 0; i < 10; i++) {
@@ -70,29 +75,52 @@ public class mainWindow extends noeditMaterial implements MouseListener, KeyList
 			calcDisplayer.setEditable(false);
 			equationDisplayer.setEditable(false);
 			
-			jf.add(backspace = new JButton("<"));jf.add(clear = new JButton("C"));jf.add(clearall = new JButton("CE"));jf.add(rootb = new JButton("\u221A"));jf.add(sinb = new JButton("sin()"));jf.add(cosb = new JButton("cos()"));jf.add(tanb = new JButton("tan()"));jf.add(squareb = new JButton("^2"));jf.add(eb = new JButton("e"));jf.add(pib = new JButton("\u03C0"));jf.add(plusorminus = new JButton("+-"));jf.add(multb = new JButton("*"));jf.add(nums[1]);jf.add(nums[2]);jf.add(nums[3]);jf.add(subtractb = new JButton("-"));jf.add(nums[4]);jf.add(nums[5]);jf.add(nums[6]);jf.add(addb = new JButton("+"));jf.add(nums[7]);jf.add(nums[8]);jf.add(nums[9]);jf.add(divb = new JButton("/"));jf.add(radian = new JButton("RT"));jf.add(nums[0]);jf.add(period = new JButton("."));jf.add(equals = new JButton("="));
+			jf.add(backspace = new JButton("<"));
+            jf.add(clear = new JButton("C"));
+            jf.add(clearall = new JButton("CE"));
+            jf.add(rootb = new JButton("\u221A"));
+            jf.add(sinb = new JButton("sin()"));
+            jf.add(cosb = new JButton("cos()"));
+            jf.add(tanb = new JButton("tan()"));
+            jf.add(squareb = new JButton("^2"));
+            jf.add(eb = new JButton("e"));
+            jf.add(pib = new JButton("\u03C0"));
+            jf.add(plusorminus = new JButton("+-"));
+            jf.add(multb = new JButton("*"));
+            jf.add(nums[1]);
+            jf.add(nums[2]);
+            jf.add(nums[3]);
+            jf.add(subtractb = new JButton("-"));
+            jf.add(nums[4]);
+            jf.add(nums[5]);
+            jf.add(nums[6]);
+            jf.add(addb = new JButton("+"));
+            jf.add(nums[7]);
+            jf.add(nums[8]);
+            jf.add(nums[9]);
+            jf.add(divb = new JButton("/"));
+            jf.add(radian = new JButton("RAD"));
+            jf.add(nums[0]);
+            jf.add(period = new JButton("."));
+            jf.add(equals = new JButton("="));
             
 			// Mouse listeners
 			for (int i = 0; i < 10; i++) {
                 nums[i].addMouseListener(this);
             }
-			divb.addMouseListener(this);subtractb.addMouseListener(this);addb.addMouseListener(this);multb.addMouseListener(this);squareb.addMouseListener(this);rootb.addMouseListener(this);sinb.addMouseListener(this);cosb.addMouseListener(this);
-			equals.addMouseListener(this);plusorminus.addMouseListener(this);period.addMouseListener(this);eb.addMouseListener(this);pib.addMouseListener(this);tanb.addMouseListener(this);
-			clear.addMouseListener(this);clearall.addMouseListener(this);backspace.addMouseListener(this);radian.addMouseListener(this);
+            
+            addb.addMouseListener(this);backspace.addMouseListener(this);clear.addMouseListener(this);clearall.addMouseListener(this);cosb.addMouseListener(this);divb.addMouseListener(this);eb.addMouseListener(this);equals.addMouseListener(this);multb.addMouseListener(this);period.addMouseListener(this);pib.addMouseListener(this);plusorminus.addMouseListener(this);radian.addMouseListener(this);rootb.addMouseListener(this);sinb.addMouseListener(this);squareb.addMouseListener(this);subtractb.addMouseListener(this);tanb.addMouseListener(this);
 			
-            // for some reason... I have to have add all of these... otherwise things get weird...
+            // Key listeners (for some reason... I have to have add all of these... otherwise things get weird...)
 			for (int i = 0; i < 10; i++) {
                 nums[i].addKeyListener(this);
             }
-			divb.addKeyListener(this);subtractb.addKeyListener(this);addb.addKeyListener(this);multb.addKeyListener(this);squareb.addKeyListener(this);rootb.addKeyListener(this);sinb.addKeyListener(this);cosb.addKeyListener(this);
-			equals.addKeyListener(this);plusorminus.addKeyListener(this);period.addKeyListener(this);eb.addKeyListener(this);pib.addKeyListener(this);tanb.addKeyListener(this);radian.addKeyListener(this);
-			clear.addKeyListener(this);clearall.addKeyListener(this);backspace.addKeyListener(this);
-			equationDisplayer.addKeyListener(this);calcDisplayer.addKeyListener(this);
+            addb.addKeyListener(this);backspace.addKeyListener(this);clear.addKeyListener(this);clearall.addKeyListener(this);cosb.addKeyListener(this);divb.addKeyListener(this);eb.addKeyListener(this);equals.addKeyListener(this);multb.addKeyListener(this);period.addKeyListener(this);pib.addKeyListener(this);plusorminus.addKeyListener(this);radian.addKeyListener(this);rootb.addKeyListener(this);sinb.addKeyListener(this);squareb.addKeyListener(this);subtractb.addKeyListener(this);tanb.addKeyListener(this);
+            
+            calcDisplayer.addKeyListener(this);equationDisplayer.addKeyListener(this);
 			
-			jf.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-			jf.setBackground(java.awt.Color.black);
-			BorderLayout bl2 = new BorderLayout();
-			mainWindow.setLayout(bl2);
+            BorderLayout bl = new BorderLayout();
+			mainWindow.setLayout(bl);
 			mainWindow.add(equationTextField, BorderLayout.NORTH);
 			mainWindow.add(textField, BorderLayout.CENTER);
 			mainWindow.add(jf, BorderLayout.SOUTH);
@@ -100,14 +128,15 @@ public class mainWindow extends noeditMaterial implements MouseListener, KeyList
 			// more purty things
 			mainWindow.setTitle("Boss Calculator");
 			Font displayerFont = new Font("Serif", Font.BOLD, 33);
-			Font buttonFont = new Font("Serif", Font.BOLD, 28);
 			calcDisplayer.setFont(displayerFont);
+            
+			Font buttonFont = new Font("Serif", Font.BOLD, 28);
             
 			for (int i = 0; i < 10; i++) {
                 nums[i].setFont(buttonFont);
             }
-			equals.setFont(buttonFont);backspace.setFont(buttonFont);plusorminus.setFont(buttonFont);clear.setFont(buttonFont);clearall.setFont(buttonFont);addb.setFont(buttonFont);
-			subtractb.setFont(buttonFont);multb.setFont(buttonFont);squareb.setFont(buttonFont);divb.setFont(buttonFont);period.setFont(buttonFont);rootb.setFont(buttonFont);sinb.setFont(buttonFont);cosb.setFont(buttonFont);pib.setFont(buttonFont);eb.setFont(buttonFont);tanb.setFont(buttonFont);radian.setFont(buttonFont);
+            addb.setFont(buttonFont);backspace.setFont(buttonFont);clear.setFont(buttonFont);clearall.setFont(buttonFont);cosb.setFont(buttonFont);divb.setFont(buttonFont);eb.setFont(buttonFont);equals.setFont(buttonFont);multb.setFont(buttonFont);period.setFont(buttonFont);pib.setFont(buttonFont);plusorminus.setFont(buttonFont);radian.setFont(buttonFont);rootb.setFont(buttonFont);sinb.setFont(buttonFont);squareb.setFont(buttonFont);subtractb.setFont(buttonFont);tanb.setFont(buttonFont);
+            
 	        String path = "calculator.png";
 	        File file = new File(path);
 	        BufferedImage image = null;
@@ -119,7 +148,7 @@ public class mainWindow extends noeditMaterial implements MouseListener, KeyList
 			mainWindow.setIconImage(image);
 
 			// finally
-			changeDimension(mainWindow, 300,250);
+			changeDimension(mainWindow, 300, 250);
 			windowPacker(mainWindow);
 		}
 			
